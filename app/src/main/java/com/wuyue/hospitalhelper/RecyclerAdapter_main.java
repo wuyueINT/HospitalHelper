@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
  *
  */
 
-public class RecyclerAdapter_main extends RecyclerView.Adapter<RecyclerAdapter_main.VH> {
+public class RecyclerAdapter_main extends XRecyclerView.Adapter<RecyclerAdapter_main.VH> {
 
     private List<DoctorLog> doctorLogs;
     private Context context;

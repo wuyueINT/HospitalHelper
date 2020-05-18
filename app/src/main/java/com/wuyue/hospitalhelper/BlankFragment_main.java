@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +28,7 @@ import java.util.List;
 
 public class BlankFragment_main extends Fragment {
 
-    private RecyclerView recyclerView;
+    private XRecyclerView recyclerView;
     private RecyclerAdapter_main adapter;
     private int label = -1; //用于标识关注1，收藏2
 
@@ -54,6 +58,23 @@ public class BlankFragment_main extends Fragment {
         adapter = new RecyclerAdapter_main(getActivity(), doctorLogs);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+
+        //下拉刷新
+        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_LONG).show();
+                recyclerView.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                Toast.makeText(getActivity(), "上拉加载", Toast.LENGTH_LONG).show();
+                recyclerView.loadMoreComplete();
+            }
+        });
+
+
 
         return view;
     }
