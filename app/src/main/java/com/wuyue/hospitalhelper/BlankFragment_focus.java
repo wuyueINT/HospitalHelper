@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -26,36 +23,36 @@ import java.util.List;
  *
  */
 
-public class BlankFragment_main extends Fragment {
+public class BlankFragment_focus extends Fragment {
 
     private XRecyclerView recyclerView;
-    private RecyclerAdapter_main adapter;
+    private RecyclerAdapter_focus adapter;
     private int label = -1; //用于标识关注1，收藏2
 
-    private BlankFragment_main(int a){
+    private BlankFragment_focus(int a){
         label = a;
     }
 
     public static Fragment newInstance(int a){
-        BlankFragment_main fragment = new BlankFragment_main(a);
+        BlankFragment_focus fragment = new BlankFragment_focus(a);
         return fragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragement01_main, null);
-        recyclerView = view.findViewById(R.id.recycler_main);
+        View view = inflater.inflate(R.layout.fragement01, null);
+        recyclerView = view.findViewById(R.id.recycler_focus);
         
         //在这里为RecyclerView准备医生的动态数据
         List<DoctorLog> doctorLogs = new ArrayList<>();
-        if (label==1){
+        if (label==0){
             doctorLogs = createDataA();
-        } else if (label==2){
+        } else if (label==1){
             doctorLogs = createDataC();
         }
 
-        adapter = new RecyclerAdapter_main(getActivity(), doctorLogs);
+        adapter = new RecyclerAdapter_focus(getActivity(), doctorLogs);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
@@ -63,18 +60,16 @@ public class BlankFragment_main extends Fragment {
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_LONG).show();
                 recyclerView.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
-                Toast.makeText(getActivity(), "上拉加载", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "上拉加载", Toast.LENGTH_LONG).show();
                 recyclerView.loadMoreComplete();
             }
         });
-
-
 
         return view;
     }
@@ -129,6 +124,17 @@ public class BlankFragment_main extends Fragment {
     private List<DoctorLog> createDataC() {
 
         List<DoctorLog> doctorLogs = new ArrayList<>();
+
+        Bitmap default_photo = BitmapFactory.decodeResource(getResources(), R.drawable.default_photo);
+
+        //创建三个备用
+        DoctorLog doctorLog1 = new DoctorLog();
+        doctorLog1.setBitmap(default_photo);
+        doctorLog1.setName("吴丽");
+        doctorLog1.setDate("2020.5.18");
+        doctorLog1.setPro("山大二院口腔主治");
+        doctorLog1.setLog("正畸效果展示");
+        doctorLogs.add(doctorLog1);
 
 
 

@@ -1,59 +1,81 @@
 package com.wuyue.hospitalhelper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.graphics.Color;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RadioGroup;
+
+import com.google.android.material.tabs.TabLayout;
+import com.wuyue.bottom_menu.BlankFragment_bottom;
+import com.wuyue.personal.PersonalActivity2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * 这个页面同时也是“发现”页面
+ * “发现”页面
  *
  */
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPager viewPager_main;
+    private static final int REQUEST_PERMISSION_CODE = 1;
     private List<Fragment> fragments;
-    private TextView tv1;
-    private TextView tv2;
-    private Button tabline;
-    int currentPage = 0;
-    int tabLineLength;
+    private Button btn_personal;
+    private Button btn_add;
+    private RadioGroup rd_group;
+    private ViewPager viewPager_main;
+
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_main);
 
-        initTabLine();
+        initPermission();
         initView();
     }
-
 
     private void initView() {
 
         viewPager_main = findViewById(R.id.viewpager_main);
-        tv1 = findViewById(R.id.tv_attention);
-        tv2 = findViewById(R.id.tv_collection);
+        rd_group = findViewById(R.id.rd_group);
+        btn_personal = findViewById(R.id.btn_personal);
+        btn_add = findViewById(R.id.btn_add);
 
+        //点击进入个人主页
+        btn_personal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PersonalActivity2.class));
+            }
+        });
+
+        //点击下方菜单栏进入不同的页面fragment
         fragments = new ArrayList<>();
-        fragments.add(BlankFragment_main.newInstance(1));
-        fragments.add(BlankFragment_main.newInstance(2));
+        for (int i=0; i<4; i++){
+            fragments.add(new BlankFragment_bottom(i));
+        }
 
-        //设置适配器
         viewPager_main.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -66,59 +88,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //关注与收藏的滑动监听
-        viewPager_main.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        //为RadioGroup绑定点击事件
+        rd_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LinearLayout.LayoutParams ll = (LinearLayout.LayoutParams) tabline.getLayoutParams();
-
-                if (currentPage==0 && position==0){
-                    ll.leftMargin = (int)(currentPage*tabLineLength+positionOffset*tabLineLength);
-                } else if (currentPage==1 && position==0){
-                    ll.leftMargin = (int)(currentPage*tabLineLength+positionOffset*tabLineLength-tabLineLength);
-                }
-
-                tabline.setLayoutParams(ll);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                tv1.setTextColor(Color.BLACK);
-                tv2.setTextColor(Color.BLACK);
-
-                switch (position){
-                    case 0:
-                        tv1.setTextColor(Color.rgb(51, 153, 0));
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rd_focus:
+                        viewPager_main.setCurrentItem(0, false);
                         break;
-                    case 1:
-                        tv2.setTextColor(Color.rgb(51, 153, 0));
+                    case R.id.rd_find:
+                        viewPager_main.setCurrentItem(1, false);
+                        break;
+                    case R.id.rd_question:
+                        viewPager_main.setCurrentItem(2, false);
+                        break;
+                    case R.id.rd_campus:
+                        viewPager_main.setCurrentItem(3, false);
+                        break;
+                    default:
                         break;
                 }
-                currentPage = position;
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
 
-    //初始化滑动条
-    private void initTabLine() {
-        // 获取显示屏信息
-        Display display = getWindow().getWindowManager().getDefaultDisplay();
-        // 得到显示屏宽度
-        DisplayMetrics metrics = new DisplayMetrics();
-        display.getMetrics(metrics);
-        // 1/3屏幕宽度
-        tabLineLength = metrics.widthPixels / 2;
-        // 获取控件实例
-        tabline = (Button) findViewById(R.id.tabline_main);
-        // 控件参数
-        ViewGroup.LayoutParams lp = tabline.getLayoutParams();
-        lp.width = tabLineLength;
-        tabline.setLayoutParams(lp);
+    //动态请求权限
+    private void initPermission() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            for (int i = 0; i < permissions.length; i++) {
+                Log.e("MainActivity", "申请的权限为：" + permissions[i] + ",申请结果：" + grantResults[i]);
+            }
+        }
     }
 }
+

@@ -9,7 +9,7 @@
 <!--        android:layout_height="match_parent" />-->
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/recycler_main"
+        android:id="@+id/recycler_focus"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

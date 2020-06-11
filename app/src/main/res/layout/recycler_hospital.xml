@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+
+
+    <ImageView
+        android:id="@+id/iv_hospital_pic"
+        android:layout_width="122dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_hospital_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="16dp"
+        android:text="医院标签"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_hospital_pic" />
+
+    <TextView
+        android:id="@+id/tv_hospital_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="24dp"
+        android:text="医院名称"
+        app:layout_constraintStart_toEndOf="@+id/iv_hospital_pic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="33dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/iv_hospital_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hospital_name"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_hospital_loc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="18dp"
+        android:text="医院位置"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hospital_name" />
+</androidx.constraintlayout.widget.ConstraintLayout>
