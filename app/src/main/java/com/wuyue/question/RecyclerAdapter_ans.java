@@ -1,6 +1,7 @@
 package com.wuyue.question;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +36,9 @@ public class RecyclerAdapter_ans extends XRecyclerView.Adapter<RecyclerAdapter_a
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH holder, int position) {
+    public void onBindViewHolder(@NonNull final VH holder, int position) {
 
-        AnsLog ansLog = ansLogs.get(position);
+        final AnsLog ansLog = ansLogs.get(position);
         String reward = "悬赏：￥" + ansLog.getReward();
         holder.tv_reward.setText(reward);
         String timelimit = "悬赏截止于：" + ansLog.getTimelimit() + "h后";
@@ -66,6 +67,20 @@ public class RecyclerAdapter_ans extends XRecyclerView.Adapter<RecyclerAdapter_a
             public void onClick(View v) {
                 //将该问题添加到关注名单
                 Toast.makeText(context, "该功能还没做", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //点击问题内容进入回答activity
+        holder.tv_ques.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(context, AnswerActivity.class);
+                intent.putExtra("labels", ansLog.getLabels());
+                intent.putExtra("question", ansLog.getQuestion());
+                intent.putExtra("ansnum", ansLog.getAnswer());
+                context.startActivity(intent);
+
             }
         });
     }

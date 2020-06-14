@@ -47,12 +47,12 @@ public class Fragment_ans extends Product {
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getContext(), "该功能还未做", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "下拉刷新", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onLoadMore() {
-                Toast.makeText(getContext(), "该功能还未做", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "上滑加载", Toast.LENGTH_SHORT).show();
             }
         });
 
