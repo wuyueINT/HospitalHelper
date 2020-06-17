@@ -1,11 +1,11 @@
 package com.wuyue.question;
 
-public class FragmentFactory {
+public class FragmentFactory_ques {
 
 
-    public static <T extends Product> T createProduct(String s){
+    public static <T extends Product_ques> T createProduct(String s){
 
-        Product p = null;
+        Product_ques p = null;
         Class clz;
         switch (s){
             case "回答":
@@ -21,7 +21,7 @@ public class FragmentFactory {
                 clz = null;
         }
         try {
-            p = (Product) Class.forName(clz.getName()).newInstance();
+            p = (Product_ques) Class.forName(clz.getName()).newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }

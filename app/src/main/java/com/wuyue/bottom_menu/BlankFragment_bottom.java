@@ -12,10 +12,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.wuyue.campus.FragmentFactory_campus;
 import com.wuyue.find.BlankFragment_find;
 import com.wuyue.hospitalhelper.BlankFragment_focus;
 import com.wuyue.hospitalhelper.R;
-import com.wuyue.question.FragmentFactory;
+import com.wuyue.question.FragmentFactory_ques;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +106,7 @@ public class BlankFragment_bottom extends Fragment {
 
         } else if (type==2){
 
+            //问答页面
             view = inflater.inflate(R.layout.viewpager_question, null);
             fragments = new ArrayList<>();
             tabLayout = view.findViewById(R.id.tablayout);
@@ -112,7 +114,7 @@ public class BlankFragment_bottom extends Fragment {
             String[] titles = {"回答","提问","查找"};
 
             for (int i=0; i<titles.length; i++){
-                fragments.add(FragmentFactory.createProduct(titles[i]));
+                fragments.add(FragmentFactory_ques.createProduct(titles[i]));
                 tabLayout.addTab(tabLayout.newTab());
             }
             vp = view.findViewById(R.id.viewpager_question);
@@ -132,12 +134,40 @@ public class BlankFragment_bottom extends Fragment {
                 tabLayout.getTabAt(i).setText(titles[i]);
             }
 
+        } else if (type==3){
+
+            //校园页面
+            view = inflater.inflate(R.layout.viewpager_campus, null);
+            fragments = new ArrayList<>();
+            tabLayout = view.findViewById(R.id.tablayout);
+            vp = view.findViewById(R.id.viewpager_campus);
+            String[] titles = {"活动通知","招募伙伴"};
+
+            for (int i=0; i<titles.length; i++){
+                fragments.add(FragmentFactory_campus.createProduct(titles[i]));
+                tabLayout.addTab(tabLayout.newTab());
+            }
+            vp = view.findViewById(R.id.viewpager_campus);
+            vp.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    return fragments.get(position);
+                }
+
+                @Override
+                public int getCount() {
+                    return fragments.size();
+                }
+            });
+            tabLayout.setupWithViewPager(vp);
+            for (int i=0; i<titles.length; i++){
+                tabLayout.getTabAt(i).setText(titles[i]);
+            }
+
         } else {
-            //其他页面暂时没写
+
             view = inflater.inflate(R.layout.test, null);
-
         }
-
         return view;
     }
 }

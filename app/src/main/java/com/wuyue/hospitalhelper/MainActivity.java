@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         btn_personal = findViewById(R.id.btn_personal);
         btn_add = findViewById(R.id.btn_add);
 
+
         //点击进入个人主页
         btn_personal.setOnClickListener(new View.OnClickListener() {
             @Override

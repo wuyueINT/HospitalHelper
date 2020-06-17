@@ -1,4 +1,4 @@
-package com.wuyue.question;
+package com.wuyue.campus;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
-public abstract class Product extends Fragment {
+public abstract class Product_campus extends Fragment {
 
     @Nullable
     @Override
     public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-    //生成测试数据
     public abstract List<?> createData();
+
 }
